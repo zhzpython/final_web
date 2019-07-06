@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+<head>
+<title>Home</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- font files  -->
+<link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Nunito:400,300,700' rel='stylesheet' type='text/css'>
+<!-- /font files  -->
+<!-- css files -->
+<link href="../static/css/style.css" rel='stylesheet' type='text/css' media="all" />
+<!-- /css files -->
+</head>
+<body>
+<h1>Register</h1>
+<div class="log">
+	<div class="content2">
+		<h2>Register</h2>
+		<form action="{% url 'registlogic' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input id='name' type="text" name="userid" value="USERNAME" onfocus="this.value = '';" onblur="checkname()"><div id="msg" style="color: red"></div>
+			<input id="phone" type="tel" name="usrtel" value="PHONE" onfocus="this.value = '';" onblur="checkphone()"><div id="msg1" style="color: red"></div>
+			<input type="email" name="email" value="EMAIL ADDRESS" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'EMAIL ADDRESS';}">
+			<input id='pwd' type="password" name="psw" value="PASSWORD" onfocus="this.value = '';" onblur="checkpwd()"><div id="msg2" style="color: red"></div>
+			<input id='tj' type="button" class="register" value="tijiao" onclick="f_right()">
+		</form>
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="footer">
+	<p>Copyright &copy;  <a href="http://www.baizhiedu.com/" target="_blank" title="百知教育">百知教育</a></p>
+</div>
+<script>
+    var g=0;
+    var g2=0;
+    var g3=0;
+    function checkname(){
+                username=document.getElementById('name').value;
+                url="{% url 'checkname' %}";
+            var xhr;
+            if (window.ActiveXObject ) {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP")
+            }else if(window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest()
+            }
+            xhr.open('post',url,true);
+            xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xhr.send('username='+username+"&csrfmiddlewaretoken="+"{{ csrf_token }}");
+            msg1=document.getElementById('msg');
+            xhr.onreadystatechange=function () {
+                if(xhr.readyState === 4 && xhr.status===200){
+                    result=xhr.responseText;
+                    if(result=='a'){
+                        msg1.innerHTML='用户名不能为空'}
+                    else if(result=='b'){
+                        msg1.innerHTML='用户名字数应小于128'}
+                    else if (result=='c'){
+                        msg1.innerHTML='不能以数字开头'}
+                    else if (result=='k'){
+                        msg1.innerHTML='用户名已存在，请重新注册！'}
+                    else if (result=='d'){
+
+                        msg1.innerHTML=' ';
+                        g=1
+                   }
+                }
+                }
+         }
+
+         function checkphone(){
+                phone=document.getElementById('phone').value;
+                url="{% url 'checkphone' %}";
+            var xhr;
+            if (window.ActiveXObject ) {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP")
+            }else if(window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest()
+            }
+            xhr.open('post',url,true);
+            xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xhr.send('phone='+phone+"&csrfmiddlewaretoken="+"{{ csrf_token }}");
+            msg1=document.getElementById('msg1');
+            xhr.onreadystatechange=function () {
+                if(xhr.readyState === 4 && xhr.status===200){
+                    result=xhr.responseText;
+                    if(result=='a'){
+                        msg1.innerHTML='手机号不能为空'}
+                    else if(result=='b'){
+                        msg1.innerHTML='手机号填写错误'}
+                    else if (result=='c'){
+                        msg1.innerHTML=' ';
+                    g2=1}
+
+                }
+                }
+         }
+
+         function checkpwd(){
+                pwd=document.getElementById('pwd').value;
+                url="{% url 'checkpwd' %}";
+            var xhr;
+            if (window.ActiveXObject ) {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP")
+            }else if(window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest()
+            }
+            xhr.open('post',url,true);
+            xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xhr.send('pwd='+pwd+"&csrfmiddlewaretoken="+"{{ csrf_token }}");
+            msg1=document.getElementById('msg2');
+            xhr.onreadystatechange=function () {
+                if(xhr.readyState === 4 && xhr.status===200){
+                    result=xhr.responseText;
+                    if(result=='a'){
+                        msg1.innerHTML='密码不能为空'}
+                    else if(result=='b'){
+                        msg1.innerHTML=' ';
+                    g3=1}
+                    else if (result=='c'){
+                        msg1.innerHTML='密码必须包含大小写字母和@'}
+
+                }
+                }
+         }
+     function f_right() {
+             a=document.getElementById('tj');
+             {#alert(g);#}
+             {#alert(g2);#}
+             {#alert(g3);#}
+             if(g===1 && g2===1 && g3===1){
+                 a.type='submit'
+             }
+         }
+</script>
+</body>
+</html>
